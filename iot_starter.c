@@ -34,15 +34,49 @@ int main(int argc, char *argv[])
 
     int port = -1;
     
-    // if there are less than 2 arguments (argc < 3), print error and exit
+     ROLE_TYPE role = SERVER;
+    char client_ip[100];
+    char server_ip[100];
 
-	// check to see if CLIENT or SERVER.  If neither, print error and exit
-	
-	// get port number.  If less than 0 or greater than MAX_PORT_NUMBER, print error and exit
-	
-	// if client, check to make sure that argc is not less than 5.  If so, print error and exit.
-
-	// get client_ip and server_ip and print to command line.  Also print port number.
+    int port = -1;
+    if(argc < 3)
+    {
+        printf("ERROR: Less than 2 arguments: exiting\n");
+        return -1;
+    }
+    else
+    {
+        if(!strcmp(argv[1], "SERVER"))
+            role = SERVER;
+        else if(!strcmp(argv[1], "CLIENT"))
+            role = CLIENT;
+        else
+        {
+            printf("ERROR: No valid role defined: exiting\n");
+            return -1;
+        }
+        port = atoi(argv[2]);
+        if(port < 0 || port > MAX_PORT_NUMBER)
+        {
+            printf("ERROR: Invalid port number defined: exiting\n");
+            return -1;
+        }
+        if(role == CLIENT)
+        {
+            if(argc < 5)
+            {
+                printf("ERROR: IP Addresses not defined: exiting\n");
+                return -1;
+            }
+            else
+            {
+                strncpy(client_ip, argv[3], sizeof(client_ip));
+                strncpy(server_ip, argv[4], sizeof(server_ip));
+                printf("Client IP = %s Server IP = %s\n", client_ip, server_ip);
+            }
+        }
+        printf("Port = %d\n", port);
+    }
     
     if(role == SERVER)
         run_server(port);
